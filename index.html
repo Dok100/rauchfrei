@@ -2,759 +2,1441 @@
 <html lang="de">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Rauchfrei & Reich – Dein Erfolgstracker</title>
-    <meta name="description" content="Verfolge deine finanziellen und gesundheitlichen Erfolge nach dem Rauchstopp.">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
+    <meta charset="UTF-8" />
+    <title>Rauchfrei – Deine Ersparnis</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
-        /* --- CSS VARIABLEN & THEMES --- */
         :root {
-            --primary-color: #10b981;
-            /* Smaragdgrün */
-            --primary-dark: #059669;
-            --accent-color: #3b82f6;
-            /* Blau */
-            --bg-color: #f0f9ff;
-            --card-bg: #ffffff;
-            --text-main: #1e293b;
+            --bg-gradient: radial-gradient(circle at top, #c7f5ff 0, #f3fff7 35%, #f5f7fb 100%);
+            --bg-dark: radial-gradient(circle at top, #0f172a 0, #020617 55%, #000000 100%);
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --card-bg-dark: rgba(15, 23, 42, 0.9);
+            --accent: #22c55e;
+            --accent-soft: rgba(34, 197, 94, 0.12);
+            --accent-strong: #16a34a;
+            --danger: #ef4444;
+            --text-main: #0f172a;
             --text-muted: #64748b;
-            --border-color: #e2e8f0;
-            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            --radius: 16px;
-            --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            --error-color: #ef4444;
+            --border-subtle: rgba(148, 163, 184, 0.4);
+            --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.18);
+            --radius-xl: 24px;
+            --radius-full: 999px;
+            --transition-fast: 180ms ease-out;
         }
 
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg-color: #0f172a;
-                --card-bg: #1e293b;
-                --text-main: #f8fafc;
-                --text-muted: #94a3b8;
-                --border-color: #334155;
-                --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
-                --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
-            }
-        }
-
-        /* --- GRUNDLAGEN --- */
         * {
             box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        html,
+        body {
             margin: 0;
             padding: 0;
-            -webkit-tap-highlight-color: transparent;
+            height: 100%;
         }
 
         body {
-            font-family: var(--font-family);
-            background-color: var(--bg-color);
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: var(--bg-gradient);
             color: var(--text-main);
-            line-height: 1.5;
-            padding: 20px;
-            transition: background-color 0.3s, color 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+            min-height: 100vh;
+            padding: 16px;
         }
 
-        .app-container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding-bottom: 40px;
-        }
-
-        /* --- TYPOGRAFIE --- */
-        h1 {
-            font-size: 1.8rem;
-            font-weight: 800;
-            text-align: center;
-            margin-bottom: 0.5rem;
-            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        h2 {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: var(--text-main);
-        }
-
-        p.subtitle {
-            text-align: center;
-            color: var(--text-muted);
-            margin-bottom: 2rem;
-            font-size: 0.95rem;
-        }
-
-        /* --- KARTEN DESIGN --- */
-        .card {
-            background-color: var(--card-bg);
-            border-radius: var(--radius);
-            padding: 1.5rem;
-            box-shadow: var(--shadow-md);
-            margin-bottom: 1.5rem;
-            border: 1px solid var(--border-color);
-            transition: transform 0.2s ease;
-        }
-
-        /* --- FORMULARE --- */
-        .form-group {
-            margin-bottom: 1rem;
-        }
-
-        label {
-            display: block;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--text-muted);
-            margin-bottom: 0.4rem;
-        }
-
-        /* Robustes Styling für alle Text-Input Typen */
-        input:not([type="checkbox"]):not([type="radio"]) {
+        .app-shell {
+            max-width: 960px;
             width: 100%;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-            background-color: var(--bg-color);
+            margin: auto;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-soft);
+            padding: 20px 18px 18px;
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(148, 163, 184, 0.25);
+        }
+
+        @media (min-width: 768px) {
+            .card {
+                padding: 28px 28px 24px;
+            }
+        }
+
+        header.app-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+
+        @media (min-width: 768px) {
+            header.app-header {
+                margin-bottom: 24px;
+            }
+        }
+
+        .logo-badge {
+            width: 44px;
+            height: 44px;
+            border-radius: 16px;
+            background: conic-gradient(from 180deg at 50% 50%, #22c55e 0deg, #22c55e 40deg, #0ea5e9 160deg, #6366f1 270deg, #22c55e 360deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo-inner {
+            width: 34px;
+            height: 34px;
+            border-radius: 12px;
+            background: rgba(15, 23, 42, 0.82);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #bbf7d0;
+            font-weight: 700;
+            font-size: 18px;
+            letter-spacing: 0.05em;
+        }
+
+        .logo-pulse {
+            position: absolute;
+            inset: -20%;
+            background: radial-gradient(circle, rgba(34, 197, 94, 0.18), transparent 60%);
+            opacity: 0.8;
+            mix-blend-mode: screen;
+        }
+
+        .header-text {
+            flex: 1;
+        }
+
+        .header-title-line {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 4px;
+        }
+
+        .header-title {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+
+        @media (min-width: 768px) {
+            .header-title {
+                font-size: 26px;
+            }
+        }
+
+        .header-subtitle {
+            font-size: 13px;
+            color: var(--text-muted);
+            max-width: 540px;
+            line-height: 1.4;
+        }
+
+        .mode-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border-radius: var(--radius-full);
+            border: 1px solid rgba(148, 163, 184, 0.4);
+            background: rgba(255, 255, 255, 0.7);
+            font-size: 11px;
+            color: var(--text-muted);
+            cursor: pointer;
+            user-select: none;
+            -webkit-user-select: none;
+            transition: background var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
+        }
+
+        .mode-toggle:hover {
+            background: rgba(255, 255, 255, 0.95);
+            border-color: rgba(148, 163, 184, 0.8);
+            transform: translateY(-0.5px);
+        }
+
+        .mode-toggle-icon {
+            width: 16px;
+            height: 16px;
+            border-radius: 999px;
+            background: radial-gradient(circle at 30% 20%, #fde68a 0, #facc15 40%, #f97316 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mode-toggle-icon::after {
+            content: "";
+            position: absolute;
+            right: -4px;
+            top: -3px;
+            width: 10px;
+            height: 10px;
+            border-radius: 999px;
+            background: #020617;
+            opacity: 0;
+            transition: opacity var(--transition-fast);
+        }
+
+        .mode-toggle.dark .mode-toggle-icon {
+            background: radial-gradient(circle at 30% 20%, #38bdf8 0, #0ea5e9 40%, #1d4ed8 100%);
+        }
+
+        .mode-toggle.dark .mode-toggle-icon::after {
+            opacity: 0.9;
+        }
+
+        .main-layout {
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+        }
+
+        @media (min-width: 880px) {
+            .main-layout {
+                flex-direction: row;
+                align-items: stretch;
+            }
+
+            .main-layout>.panel,
+            .main-layout>.stats-panel {
+                flex: 1 1 0;
+            }
+        }
+
+        .panel {
+            border-radius: 20px;
+            border: 1px solid var(--border-subtle);
+            padding: 14px 14px 12px;
+            background: rgba(248, 250, 252, 0.82);
+        }
+
+        @media (min-width: 880px) {
+            .panel {
+                padding: 16px 18px 14px;
+            }
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .panel-title {
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        .panel-tagline {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px 14px;
+        }
+
+        @media (min-width: 600px) {
+            .form-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        label.field {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .field span.label-main {
+            font-size: 13px;
+            font-weight: 500;
             color: var(--text-main);
-            font-size: 1rem;
-            font-family: inherit;
-            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .field span.label-sub {
+            font-size: 11px;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-prefix,
+        .input-suffix {
+            position: absolute;
+            left: 10px;
+            font-size: 13px;
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+
+        .input-suffix {
+            left: auto;
+            right: 10px;
+        }
+
+        input[type="number"],
+        input[type="date"],
+        input[type="text"] {
+            width: 100%;
+            padding: 8px 10px;
+            border-radius: 12px;
+            border: 1px solid rgba(148, 163, 184, 0.8);
+            background: rgba(255, 255, 255, 0.9);
+            font-size: 13px;
+            color: var(--text-main);
+            outline: none;
+            transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast), transform var(--transition-fast);
             -webkit-appearance: none;
-            /* Wichtig für iOS */
-            appearance: none;
+        }
+
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input.with-prefix {
+            padding-left: 22px;
+        }
+
+        input.with-suffix {
+            padding-right: 40px;
         }
 
         input:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+            border-color: var(--accent-strong);
+            box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.35);
+            background: #ffffff;
+            transform: translateY(-0.5px);
         }
 
-        /* Fehleranzeige */
-        .error-msg {
-            color: var(--error-color);
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-            padding: 0.75rem;
-            background-color: rgba(239, 68, 68, 0.1);
-            border-radius: 8px;
-            display: none;
-            /* Initial versteckt */
-            text-align: center;
-            font-weight: 600;
+        .form-footer {
+            margin-top: 12px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
         }
 
-        /* --- DASHBOARD / STATISTIKEN --- */
+        .btn-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            border-radius: var(--radius-full);
+            padding: 8px 14px;
+            border: none;
+            font-size: 13px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast), opacity var(--transition-fast);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+            color: #f9fafb;
+            box-shadow: 0 10px 25px rgba(34, 197, 94, 0.5);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 14px 32px rgba(22, 163, 74, 0.6);
+        }
+
+        .btn-secondary {
+            background: rgba(15, 23, 42, 0.03);
+            border: 1px solid rgba(148, 163, 184, 0.7);
+            color: var(--text-muted);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(15, 23, 42, 0.06);
+        }
+
+        .btn-icon {
+            font-size: 14px;
+            line-height: 1;
+        }
+
+        .hint-text {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .hint-dot {
+            display: inline-flex;
+            width: 6px;
+            height: 6px;
+            border-radius: 999px;
+            background: var(--accent);
+            margin-right: 4px;
+        }
+
+        .stats-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
         .hero-stat {
-            text-align: center;
-            padding: 1rem 0;
+            position: relative;
+            border-radius: 20px;
+            padding: 14px 14px 12px;
+            background: radial-gradient(circle at top left, rgba(34, 197, 94, 0.18), rgba(15, 23, 42, 0.9));
+            color: #e5f9ef;
+            overflow: hidden;
+        }
+
+        @media (min-width: 880px) {
+            .hero-stat {
+                padding: 18px 18px 16px;
+            }
+        }
+
+        .hero-glow {
+            position: absolute;
+            inset: -40%;
+            background:
+                radial-gradient(circle at 10% 0%, rgba(56, 189, 248, 0.55), transparent 55%),
+                radial-gradient(circle at 90% 20%, rgba(34, 197, 94, 0.7), transparent 52%),
+                radial-gradient(circle at 50% 90%, rgba(59, 130, 246, 0.4), transparent 60%);
+            opacity: 0.45;
+            filter: blur(2px);
+        }
+
+        .hero-inner {
+            position: relative;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: 10px;
+            align-items: center;
+        }
+
+        @media (min-width: 1100px) {
+            .hero-inner {
+                grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+            }
         }
 
         .hero-label {
-            font-size: 0.9rem;
-            color: var(--text-muted);
+            font-size: 12px;
+            letter-spacing: 0.18em;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 0.5rem;
+            opacity: 0.8;
+            margin-bottom: 4px;
         }
 
-        .hero-value {
-            font-size: 3rem;
-            font-weight: 800;
-            color: var(--primary-color);
-            line-height: 1;
-            margin-bottom: 0.5rem;
-            font-feature-settings: "tnum";
-            font-variant-numeric: tabular-nums;
+        .hero-main-number {
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            margin-bottom: 4px;
+            white-space: nowrap;
         }
 
-        .hero-sub {
-            font-size: 0.9rem;
-            color: var(--text-muted);
+        @media (min-width: 480px) {
+            .hero-main-number {
+                font-size: 30px;
+            }
+        }
+
+        .hero-main-number span.unit {
+            font-size: 13px;
+            font-weight: 500;
+            opacity: 0.85;
+        }
+
+        .hero-subline {
+            font-size: 12px;
+            opacity: 0.9;
+            max-width: 360px;
+        }
+
+        .hero-chip-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 6px;
+        }
+
+        .hero-chip {
+            font-size: 11px;
+            padding: 4px 8px;
+            border-radius: var(--radius-full);
+            border: 1px solid rgba(226, 232, 240, 0.5);
+            background: rgba(15, 23, 42, 0.4);
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .hero-chip-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 999px;
+            background: #4ade80;
+        }
+
+        .hero-secondary {
+            font-size: 12px;
+            text-align: left;
+            opacity: 0.9;
+            max-width: 260px;
+        }
+
+        .hero-secondary strong {
+            font-weight: 600;
         }
 
         .stats-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-top: 1rem;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
         }
 
-        .stat-item {
-            background-color: var(--bg-color);
-            padding: 1rem;
-            border-radius: 12px;
-            text-align: center;
+        @media (min-width: 720px) {
+            .stats-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .stats-grid {
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+            }
+        }
+
+        .stat-card {
+            border-radius: 16px;
+            padding: 10px 10px 8px;
+            background: rgba(248, 250, 252, 0.9);
+            border: 1px solid rgba(148, 163, 184, 0.4);
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            min-height: 72px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
         }
 
         .stat-value {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: var(--text-main);
-            margin-bottom: 0.2rem;
+            font-size: 16px;
+            font-weight: 600;
         }
 
-        .stat-desc {
-            font-size: 0.8rem;
+        .stat-note {
+            font-size: 11px;
             color: var(--text-muted);
         }
 
-        /* --- ZIEL PROGRESS BAR --- */
-        .progress-container {
+        .goal-panel {
+            border-radius: 16px;
+            padding: 10px 10px 9px;
+            background: rgba(22, 163, 74, 0.04);
+            border: 1px dashed rgba(34, 197, 94, 0.7);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .goal-header {
+            font-size: 12px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .goal-header span.icon {
+            font-size: 16px;
+        }
+
+        .goal-row {
+            display: grid;
+            grid-template-columns: 1.6fr 1.4fr;
+            gap: 8px;
+            align-items: center;
+        }
+
+        @media (max-width: 480px) {
+            .goal-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .progress-track {
             width: 100%;
-            height: 12px;
-            background-color: var(--border-color);
-            border-radius: 6px;
+            height: 8px;
+            border-radius: 999px;
+            background: rgba(148, 163, 184, 0.28);
             overflow: hidden;
-            margin: 1rem 0;
             position: relative;
         }
 
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
-            width: 0%;
-            border-radius: 6px;
-            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+        .progress-fill {
+            position: absolute;
+            inset: 0;
+            width: 0;
+            border-radius: inherit;
+            background: linear-gradient(90deg, #22c55e, #a3e635);
+            transition: width 260ms ease-out;
         }
 
-        .goal-info {
+        .goal-meta {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        footer.app-footer {
+            margin-top: 12px;
+            font-size: 11px;
+            color: var(--text-muted);
             display: flex;
             justify-content: space-between;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-top: 0.5rem;
+            flex-wrap: wrap;
+            gap: 6px;
         }
 
-        .goal-prediction {
-            margin-top: 0.5rem;
-            font-size: 0.85rem;
-            color: var(--accent-color);
+        .app-footer strong {
             font-weight: 600;
-            text-align: center;
+            color: var(--text-main);
         }
 
-        /* --- BUTTONS --- */
-        .btn {
+        .error-banner {
+            margin-top: 8px;
+            padding: 6px 8px;
+            border-radius: 12px;
+            background: rgba(248, 113, 113, 0.08);
+            border: 1px solid rgba(248, 113, 113, 0.7);
+            font-size: 11px;
+            color: #991b1b;
+            display: none;
+        }
+
+        .error-banner.visible {
             display: block;
-            width: 100%;
-            padding: 14px;
-            /* Größere Hit-Area für Touch */
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s, transform 0.1s;
-            text-align: center;
-            touch-action: manipulation;
-            -webkit-appearance: none;
         }
 
-        .btn-primary {
-            background-color: var(--primary-color);
-            color: white;
+        /* Dark mode */
+        body.dark {
+            background: var(--bg-dark);
+            color: #e5e7eb;
         }
 
-        .btn-primary:active {
-            transform: scale(0.98);
-            background-color: var(--primary-dark);
+        body.dark .card {
+            background: var(--card-bg-dark);
+            border-color: rgba(30, 64, 175, 0.7);
         }
 
-        .btn-danger {
-            background-color: rgba(239, 68, 68, 0.1);
-            color: #ef4444;
-            border: 1px solid rgba(239, 68, 68, 0.2);
+        body.dark .panel {
+            background: rgba(15, 23, 42, 0.9);
+            border-color: rgba(30, 64, 175, 0.9);
         }
 
-        /* --- ANIMATIONEN --- */
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        body.dark input[type="number"],
+        body.dark input[type="date"],
+        body.dark input[type="text"] {
+            background: rgba(15, 23, 42, 0.9);
+            border-color: rgba(51, 65, 85, 0.9);
+            color: #e5e7eb;
         }
 
-        .fade-in {
-            animation: fadeUp 0.6s ease-out forwards;
+        body.dark input:focus {
+            background: #020617;
         }
 
-        .hidden {
-            display: none !important;
+        body.dark .panel-title,
+        body.dark .panel-tagline,
+        body.dark .hint-text,
+        body.dark .stat-note,
+        body.dark .goal-meta {
+            color: #9ca3af;
         }
 
-        /* Input Edit Toggle */
-        .settings-toggle {
-            text-align: right;
-            margin-bottom: 10px;
+        body.dark .stat-card {
+            background: rgba(15, 23, 42, 0.9);
+            border-color: rgba(51, 65, 85, 0.9);
         }
 
-        .link-btn {
-            background: none;
-            border: none;
-            color: var(--accent-color);
-            font-size: 0.9rem;
-            cursor: pointer;
-            text-decoration: underline;
-            padding: 5px;
+        body.dark .goal-panel {
+            background: rgba(22, 163, 74, 0.09);
+            border-color: rgba(34, 197, 94, 0.85);
         }
 
-        @media (min-width: 768px) {
-            .app-container {
-                margin-top: 40px;
-            }
+        body.dark .mode-toggle {
+            background: rgba(15, 23, 42, 0.85);
+            border-color: rgba(51, 65, 85, 0.9);
+            color: #9ca3af;
+        }
 
-            h1 {
-                font-size: 2.5rem;
-            }
+        body.dark .mode-toggle:hover {
+            background: rgba(15, 23, 42, 1);
+        }
+
+        body.dark .header-subtitle,
+        body.dark .panel-tagline,
+        body.dark .hint-text {
+            color: #9ca3af;
+        }
+
+        body.dark .app-footer strong {
+            color: #e5e7eb;
         }
     </style>
 </head>
 
 <body>
-
-    <div class="app-container">
-        <header class="fade-in">
-            <h1>Rauchfrei & Reich</h1>
-            <p class="subtitle">Jeder Tag zählt für deine Gesundheit und dein Konto.</p>
-        </header>
-
-        <!-- FEHLER BOX -->
-        <div id="errorBox" class="error-msg"></div>
-
-        <!-- EINGABEBEREICH (KEIN FORMULAR MEHR UM BUGS ZU VERMEIDEN) -->
-        <section id="settingsCard" class="card fade-in">
-            <h2 id="settingsTitle">Deine Daten</h2>
-
-            <div id="inputArea">
-                <div class="form-group">
-                    <label for="startDate">Wann hast du aufgehört?</label>
-                    <input type="date" id="startDate">
+    <div class="app-shell">
+        <div class="card">
+            <header class="app-header">
+                <div class="logo-badge" aria-hidden="true">
+                    <div class="logo-pulse"></div>
+                    <div class="logo-inner">RF</div>
                 </div>
-                <div class="stats-grid" style="margin-top:0; margin-bottom: 1rem;">
-                    <div class="form-group" style="margin-bottom:0;">
-                        <label for="cigsPerDay">Zigaretten/Tag</label>
-                        <!-- type="text" mit inputmode="decimal" ist am sichersten für iOS Komma-Eingaben -->
-                        <input type="text" inputmode="decimal" id="cigsPerDay" placeholder="20">
+                <div class="header-text">
+                    <div class="header-title-line">
+                        <div class="header-title">Rauchfrei – deine Ersparnis</div>
+                        <button type="button" class="mode-toggle" id="modeToggle">
+                            <div class="mode-toggle-icon"></div>
+                            <span>Hell / Dunkel</span>
+                        </button>
                     </div>
-                    <div class="form-group" style="margin-bottom:0;">
-                        <label for="packPrice">Preis/Schachtel (€)</label>
-                        <input type="text" inputmode="decimal" id="packPrice" placeholder="8,00">
+                    <div class="header-subtitle">
+                        Jeder Tag ohne Zigarette stärkt deine Gesundheit – und dein Konto.
+                        Diese Seite zeigt dir, wie viel Geld du seit deinem Rauchstopp schon gespart hast.
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="cigsPerPack">Zigaretten pro Schachtel</label>
-                    <input type="text" inputmode="decimal" id="cigsPerPack" placeholder="20" value="20">
-                </div>
+            </header>
 
-                <!-- type="button" verhindert Formular-Verhalten -->
-                <button type="button" class="btn btn-primary" id="saveBtn">Berechnen & Speichern</button>
-            </div>
-        </section>
-
-        <!-- HAUPT DASHBOARD (Initial versteckt) -->
-        <main id="dashboard" class="hidden">
-            <div class="settings-toggle">
-                <button type="button" class="link-btn" id="editBtn">Einstellungen ändern</button>
-            </div>
-
-            <!-- HERO CARD: GELD -->
-            <section class="card fade-in">
-                <div class="hero-stat">
-                    <div class="hero-label">Gesamtersparnis</div>
-                    <div class="hero-value" id="displayMoney">0,00 €</div>
-                    <div class="hero-sub">...und es wird jede Sekunde mehr!</div>
-                </div>
-            </section>
-
-            <!-- DETAILS GRID -->
-            <section class="stats-grid fade-in">
-                <div class="stat-item">
-                    <div class="stat-value" id="displayDays">0</div>
-                    <div class="stat-desc">Tage rauchfrei</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="displayNotSmoked">0</div>
-                    <div class="stat-desc">Nicht geraucht</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="displayMonthSave">0 €</div>
-                    <div class="stat-desc">Ersparnis / Monat</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="displayYearSave">0 €</div>
-                    <div class="stat-desc">Ersparnis / Jahr</div>
-                </div>
-            </section>
-
-            <!-- ZIELSETZUNG -->
-            <section class="card fade-in">
-                <h2>Dein nächstes Ziel</h2>
-                <div class="form-group">
-                    <label for="goalName">Wunsch (z.B. Urlaub)</label>
-                    <input type="text" id="goalName" placeholder="Mein Traum...">
-                </div>
-                <div class="form-group">
-                    <label for="goalCost">Kosten (€)</label>
-                    <input type="text" inputmode="decimal" id="goalCost" placeholder="1000">
-                </div>
-
-                <div id="goalDisplay" class="hidden">
-                    <div class="progress-container">
-                        <div class="progress-bar" id="progressBar"></div>
+            <main class="main-layout">
+                <section class="panel" aria-label="Einstellungen Rauchstopp">
+                    <div class="panel-header">
+                        <div class="panel-title">Basisdaten</div>
+                        <div class="panel-tagline">Einmal eingeben – die Zahlen laufen für dich weiter.</div>
                     </div>
-                    <div class="goal-info">
-                        <span id="goalPercent">0%</span>
-                        <span id="goalRemaining">Noch 0 €</span>
+
+                    <form id="configForm" autocomplete="off">
+                        <div class="form-grid">
+                            <label class="field">
+                                <span class="label-main">Datum des Rauchstopps</span>
+                                <span class="label-sub">Ab diesem Tag zählst du als rauchfrei.</span>
+                                <div class="input-wrapper">
+                                    <!-- required entfernt, Validierung komplett in JS -->
+                                    <input type="date" id="startDate" name="startDate" />
+                                </div>
+                            </label>
+
+                            <label class="field">
+                                <span class="label-main">Zigaretten pro Tag vorher</span>
+                                <span class="label-sub">Durchschnittliche Anzahl pro Tag.</span>
+                                <div class="input-wrapper">
+                                    <input type="number" id="cigsPerDay" name="cigsPerDay" min="1" step="1"
+                                        inputmode="decimal" />
+                                </div>
+                            </label>
+
+                            <label class="field">
+                                <span class="label-main">Preis pro Zigarette</span>
+                                <span class="label-sub">In Euro. Komma ist erlaubt.</span>
+                                <div class="input-wrapper">
+                                    <span class="input-prefix">€</span>
+                                    <input type="text" id="pricePerCig" name="pricePerCig" class="with-prefix"
+                                        inputmode="decimal" placeholder="0,40" />
+                                </div>
+                            </label>
+
+                            <label class="field">
+                                <span class="label-main">Sparziel (optional)</span>
+                                <span class="label-sub">Zum Beispiel Urlaub, neues Fahrrad, Technik.</span>
+                                <div class="input-wrapper">
+                                    <span class="input-prefix">€</span>
+                                    <input type="text" id="goalAmount" name="goalAmount" class="with-prefix"
+                                        inputmode="decimal" placeholder="1.000,00" />
+                                </div>
+                            </label>
+                        </div>
+
+                        <div class="form-footer">
+                            <div class="btn-row">
+                                <button type="submit" class="btn btn-primary" id="saveButton">
+                                    <span class="btn-icon">▶</span>
+                                    <span>Berechnen &amp; speichern</span>
+                                </button>
+                                <button type="button" class="btn btn-secondary" id="resetButton">
+                                    <span class="btn-icon">⟲</span>
+                                    <span>Zurücksetzen</span>
+                                </button>
+                            </div>
+                            <div class="hint-text">
+                                <span class="hint-dot"></span>
+                                Deine Angaben werden nur lokal in diesem Browser gespeichert (localStorage).
+                            </div>
+                        </div>
+                        <div class="error-banner" id="errorBanner"></div>
+                    </form>
+                </section>
+
+                <section class="stats-panel" aria-label="Deine Ersparnis">
+                    <div class="hero-stat">
+                        <div class="hero-glow" aria-hidden="true"></div>
+                        <div class="hero-inner">
+                            <div>
+                                <div class="hero-label">Bisherige Ersparnis</div>
+                                <div class="hero-main-number">
+                                    <span id="savingsTotalDisplay">0,00</span>
+                                    <span class="unit">Euro</span>
+                                </div>
+                                <div class="hero-subline" id="heroMessage">
+                                    Sobald du dein Rauchstopp-Datum eingibst, beginnt deine persönliche Ersparnisreise.
+                                </div>
+                                <div class="hero-chip-row">
+                                    <div class="hero-chip">
+                                        <span class="hero-chip-dot"></span>
+                                        <span id="heroChipDays">0 Tage rauchfrei</span>
+                                    </div>
+                                    <div class="hero-chip">
+                                        💡
+                                        <span id="heroChipTip">Schon kleine Schritte summieren sich zu großen
+                                            Beträgen.</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hero-secondary">
+                                <div>Wenn du heute wieder anfangen würdest,</div>
+                                <div><strong>würde diese Zahl sofort stehen bleiben.</strong></div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="goal-prediction" id="goalDate"></div>
-                </div>
-            </section>
 
-            <!-- MOTIVATION -->
-            <section class="card fade-in" style="background: linear-gradient(135deg, #f0fdf4, #dcfce7); border: none;">
-                <p style="text-align: center; color: #166534; font-weight: 500;" id="motivationText">
-                    Dein Körper erholt sich!
-                </p>
-            </section>
+                    <div class="stats-grid" aria-label="Detailkennzahlen">
+                        <div class="stat-card">
+                            <div class="stat-label">Rauchfreie Tage</div>
+                            <div class="stat-value" id="daysSmokeFreeDisplay">0</div>
+                            <div class="stat-note">Seit deinem Rauchstopp.</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Nicht gerauchte Zigaretten</div>
+                            <div class="stat-value" id="cigsNotSmokedDisplay">0</div>
+                            <div class="stat-note">Jede einzelne davon ist ein Plus.</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Ersparnis pro Monat</div>
+                            <div class="stat-value" id="savingsPerMonthDisplay">0,00 €</div>
+                            <div class="stat-note">Auf Basis von 30 Tagen.</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Ersparnis pro Jahr</div>
+                            <div class="stat-value" id="savingsPerYearDisplay">0,00 €</div>
+                            <div class="stat-note">Auf Basis von 365 Tagen.</div>
+                        </div>
+                    </div>
 
-            <button type="button" class="btn btn-danger" id="resetBtn" style="margin-top: 20px;">Daten
-                zurücksetzen</button>
-        </main>
+                    <div class="goal-panel" aria-label="Sparziel" id="goalPanel">
+                        <div class="goal-header">
+                            <div>
+                                <span class="icon">🎯</span>
+                                <span>Dein Sparziel</span>
+                            </div>
+                            <div class="goal-summary goal-meta" id="goalSummary">
+                                Lege ein Ziel fest, um deine Ersparnis sichtbar zu machen.
+                            </div>
+                        </div>
+                        <div class="goal-row">
+                            <div>
+                                <div class="goal-meta" id="goalProgressLabel">Zielerreichung: 0 %</div>
+                                <div class="progress-track">
+                                    <div class="progress-fill" id="goalProgressFill"></div>
+                                </div>
+                            </div>
+                            <div class="goal-meta" id="goalForecast">
+                                Sobald du ein Sparziel und deine Basisdaten eingibst, siehst du hier, wann du
+                                voraussichtlich am Ziel bist.
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+
+            <footer class="app-footer">
+                <div><strong>Motivation:</strong> Jeder Tag ohne Zigarette spart Geld – und schenkt dir Spielraum für
+                    das, was dir wirklich wichtig ist.</div>
+                <div>Hinweis: Alle Werte sind Schätzungen auf Basis deiner Angaben.</div>
+            </footer>
+        </div>
     </div>
 
     <script>
-        /* --- DOM ELEMENTS --- */
-        const els = {
-            settingsCard: document.getElementById('settingsCard'),
-            settingsTitle: document.getElementById('settingsTitle'),
-            inputArea: document.getElementById('inputArea'),
-            saveBtn: document.getElementById('saveBtn'), // Button direkt
-            errorBox: document.getElementById('errorBox'),
+        (function () {
+            "use strict";
 
-            startDate: document.getElementById('startDate'),
-            cigsPerDay: document.getElementById('cigsPerDay'),
-            packPrice: document.getElementById('packPrice'),
-            cigsPerPack: document.getElementById('cigsPerPack'),
+            const startDateInput = document.getElementById("startDate");
+            const cigsPerDayInput = document.getElementById("cigsPerDay");
+            const pricePerCigInput = document.getElementById("pricePerCig");
+            const goalAmountInput = document.getElementById("goalAmount");
+            const configForm = document.getElementById("configForm");
+            const saveButton = document.getElementById("saveButton");
+            const resetButton = document.getElementById("resetButton");
+            const errorBanner = document.getElementById("errorBanner");
+            const modeToggle = document.getElementById("modeToggle");
 
-            editBtn: document.getElementById('editBtn'),
-            dashboard: document.getElementById('dashboard'),
+            const savingsTotalDisplay = document.getElementById("savingsTotalDisplay");
+            const daysSmokeFreeDisplay = document.getElementById("daysSmokeFreeDisplay");
+            const cigsNotSmokedDisplay = document.getElementById("cigsNotSmokedDisplay");
+            const savingsPerMonthDisplay = document.getElementById("savingsPerMonthDisplay");
+            const savingsPerYearDisplay = document.getElementById("savingsPerYearDisplay");
+            const heroMessage = document.getElementById("heroMessage");
+            const heroChipDays = document.getElementById("heroChipDays");
+            const heroChipTip = document.getElementById("heroChipTip");
+            const goalSummary = document.getElementById("goalSummary");
+            const goalProgressLabel = document.getElementById("goalProgressLabel");
+            const goalProgressFill = document.getElementById("goalProgressFill");
+            const goalForecast = document.getElementById("goalForecast");
 
-            displayMoney: document.getElementById('displayMoney'),
-            displayDays: document.getElementById('displayDays'),
-            displayNotSmoked: document.getElementById('displayNotSmoked'),
-            displayMonthSave: document.getElementById('displayMonthSave'),
-            displayYearSave: document.getElementById('displayYearSave'),
+            const STORAGE_KEY = "rauchfrei-config-v1";
+            const THEME_KEY = "rauchfrei-theme";
 
-            goalName: document.getElementById('goalName'),
-            goalCost: document.getElementById('goalCost'),
-            goalDisplay: document.getElementById('goalDisplay'),
-            progressBar: document.getElementById('progressBar'),
-            goalPercent: document.getElementById('goalPercent'),
-            goalRemaining: document.getElementById('goalRemaining'),
-            goalDate: document.getElementById('goalDate'),
-
-            resetBtn: document.getElementById('resetBtn'),
-            motivationText: document.getElementById('motivationText')
-        };
-
-        /* --- STATE --- */
-        let appData = {
-            startDate: null,
-            cigsPerDay: 0,
-            pricePerCig: 0,
-            goalName: '',
-            goalCost: 0
-        };
-        let tickerInterval = null;
-
-        const quotes = [
-            "Deine Lunge beginnt sich zu erholen.",
-            "Du riechst wieder frisch und sauber!",
-            "Denk an all die Zeit, die du gewinnst.",
-            "Deine Geschmacksnerven kommen zurück.",
-            "Jeder Tag ohne Rauch ist ein Sieg.",
-            "Dein Herzinfarktrisiko sinkt bereits.",
-            "Du bist stärker als das Nikotin."
-        ];
-
-        /* --- ROBUST PARSING HELPER --- */
-        function parseFlexibleFloat(val) {
-            if (!val) return 0;
-            let str = val.toString().trim();
-            if (str === "") return 0;
-            str = str.replace(',', '.');
-            str = str.replace(/[^0-9.]/g, '');
-            const result = parseFloat(str);
-            return isNaN(result) ? 0 : result;
-        }
-
-        function showError(msg) {
-            els.errorBox.innerText = msg;
-            els.errorBox.style.display = 'block';
-            // Scroll to error to make sure user sees it
-            els.errorBox.scrollIntoView({ behavior: 'smooth' });
-            setTimeout(() => { els.errorBox.style.display = 'none'; }, 5000);
-        }
-
-        /* --- INITIALIZATION --- */
-        document.addEventListener('DOMContentLoaded', () => {
-            loadData();
-
-            // Setze Standard-Datum (Heute) SICHER als String
-            if (!els.startDate.value) {
-                const today = new Date().toISOString().split('T')[0];
-                els.startDate.value = today;
-            }
-
-            els.motivationText.innerText = quotes[Math.floor(Math.random() * quotes.length)];
-        });
-
-        /* --- BUTTON LOGIC --- */
-
-        // Normaler Click Listener (Kein Submit Event mehr)
-        els.saveBtn.addEventListener('click', () => {
-
-            // Manuelle Validierung
-            if (!els.startDate.value) {
-                showError("Bitte wähle ein Startdatum aus.");
-                return;
-            }
-
-            const dailyCigs = parseFlexibleFloat(els.cigsPerDay.value);
-            const price = parseFlexibleFloat(els.packPrice.value);
-
-            if (dailyCigs <= 0) {
-                showError("Bitte gib an, wie viele Zigaretten du geraucht hast.");
-                return;
-            }
-            if (price <= 0) {
-                showError("Bitte gib einen Preis ein.");
-                return;
-            }
-
-            // Versuche Speichern - mit Error Catching um Absturz zu verhindern
-            try {
-                saveDataToState();
-                persistData();
-                renderDashboard();
-                toggleView(true);
-            } catch (e) {
-                console.error(e);
-                showError("Ein Fehler ist aufgetreten. Bitte überprüfe deine Eingaben.");
-            }
-        });
-
-        els.editBtn.addEventListener('click', () => {
-            toggleView(false);
-        });
-
-        els.resetBtn.addEventListener('click', () => {
-            if (confirm("Möchtest du alle Daten löschen?")) {
-                try {
-                    localStorage.removeItem('rauchfreiData');
-                } catch (e) { }
-                location.reload();
-            }
-        });
-
-        [els.goalName, els.goalCost].forEach(input => {
-            input.addEventListener('input', () => {
-                saveDataToState();
-                updateGoalUI();
-            });
-            input.addEventListener('blur', persistData);
-        });
-
-        /* --- CORE LOGIC --- */
-
-        function saveDataToState() {
-            const dailyCigs = parseFlexibleFloat(els.cigsPerDay.value);
-            const packPrice = parseFlexibleFloat(els.packPrice.value);
-            let packSize = parseFlexibleFloat(els.cigsPerPack.value);
-            if (packSize === 0) packSize = 20;
-
-            // Sicherere Datumskonvertierung
-            const dateVal = els.startDate.value; // String "2023-10-27"
-            const dateObj = new Date(dateVal);
-
-            // Prüfen ob Datum gültig
-            if (isNaN(dateObj.getTime())) {
-                appData.startDate = new Date(); // Fallback auf Heute
-            } else {
-                appData.startDate = dateObj;
-            }
-
-            appData.cigsPerDay = dailyCigs;
-            appData.pricePerCig = packPrice / packSize;
-
-            appData.goalName = els.goalName.value;
-            appData.goalCost = parseFlexibleFloat(els.goalCost.value);
-        }
-
-        function persistData() {
-            const storeObj = {
-                startDate: els.startDate.value,
-                cigsPerDay: els.cigsPerDay.value,
-                packPrice: els.packPrice.value,
-                cigsPerPack: els.cigsPerPack.value,
-                goalName: els.goalName.value,
-                goalCost: els.goalCost.value
+            let lastTotals = {
+                totalSavings: 0,
+                daysSmokeFree: 0,
+                cigsNotSmoked: 0,
+                savingsPerMonth: 0,
+                savingsPerYear: 0
             };
-            try {
-                localStorage.setItem('rauchfreiData', JSON.stringify(storeObj));
-            } catch (e) {
-                // Ignoriere Storage Fehler (Private Mode)
+
+            const numberFormatter = new Intl.NumberFormat("de-DE", {
+                maximumFractionDigits: 0
+            });
+
+            const currencyFormatter = new Intl.NumberFormat("de-DE", {
+                style: "currency",
+                currency: "EUR",
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+
+            const compactCurrencyFormatter = new Intl.NumberFormat("de-DE", {
+                style: "currency",
+                currency: "EUR",
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            });
+
+            function parseGermanNumber(value) {
+                if (!value) return NaN;
+                const normalized = value
+                    .toString()
+                    .trim()
+                    .replace(/\./g, "")
+                    .replace(/,/g, ".");
+                const parsed = parseFloat(normalized);
+                return isNaN(parsed) ? NaN : parsed;
             }
-        }
 
-        function loadData() {
-            try {
-                const stored = localStorage.getItem('rauchfreiData');
-                if (stored) {
-                    const data = JSON.parse(stored);
-                    if (data.startDate) els.startDate.value = data.startDate;
-                    if (data.cigsPerDay) els.cigsPerDay.value = data.cigsPerDay;
-                    if (data.packPrice) els.packPrice.value = data.packPrice;
-                    if (data.cigsPerPack) els.cigsPerPack.value = data.cigsPerPack;
-                    if (data.goalName) els.goalName.value = data.goalName;
-                    if (data.goalCost) els.goalCost.value = data.goalCost;
+            function formatGermanNumber(value, fractionDigits) {
+                if (typeof value !== "number" || !isFinite(value)) return "0";
+                const formatter = new Intl.NumberFormat("de-DE", {
+                    minimumFractionDigits: fractionDigits,
+                    maximumFractionDigits: fractionDigits
+                });
+                return formatter.format(value);
+            }
 
-                    // Nur umschalten wenn essentielle Daten da sind
-                    if (data.startDate && data.cigsPerDay && data.packPrice) {
-                        saveDataToState();
-                        renderDashboard();
-                        toggleView(true);
+            function showError(message) {
+                if (!message) {
+                    errorBanner.classList.remove("visible");
+                    errorBanner.textContent = "";
+                    return;
+                }
+                errorBanner.textContent = message;
+                errorBanner.classList.add("visible");
+            }
+
+            function getConfigFromInputs() {
+                const startDateValue = startDateInput.value;
+                const cigsPerDayRaw = cigsPerDayInput.value;
+                const pricePerCigRaw = pricePerCigInput.value;
+                const goalAmountRaw = goalAmountInput.value;
+
+                if (!startDateValue) {
+                    throw new Error("Bitte wähle das Datum deines Rauchstopps aus.");
+                }
+
+                const startDate = new Date(startDateValue + "T00:00:00");
+                if (isNaN(startDate.getTime())) {
+                    throw new Error("Das Datum des Rauchstopps ist ungültig.");
+                }
+
+                const cigsPerDay = parseFloat(cigsPerDayRaw || "0");
+                if (!Number.isFinite(cigsPerDay) || cigsPerDay < 0) {
+                    throw new Error("Bitte gib eine gültige Anzahl an Zigaretten pro Tag ein.");
+                }
+
+                const pricePerCig = parseGermanNumber(pricePerCigRaw || "0");
+                if (!Number.isFinite(pricePerCig) || pricePerCig < 0) {
+                    throw new Error("Bitte gib einen gültigen Preis pro Zigarette ein.");
+                }
+
+                let goalAmount = null;
+                if (goalAmountRaw && goalAmountRaw.trim() !== "") {
+                    const parsedGoal = parseGermanNumber(goalAmountRaw);
+                    if (!Number.isFinite(parsedGoal) || parsedGoal <= 0) {
+                        throw new Error("Das Sparziel ist ungültig. Bitte gib einen positiven Betrag ein.");
+                    }
+                    goalAmount = parsedGoal;
+                }
+
+                const today = new Date();
+                const todayMidnight = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+                if (startDate.getTime() > todayMidnight.getTime()) {
+                    throw new Error("Das Rauchstopp-Datum liegt in der Zukunft. Bitte wähle ein Datum bis heute.");
+                }
+
+                return {
+                    startDateISO: startDateValue,
+                    startDateMs: startDate.getTime(),
+                    cigsPerDay,
+                    pricePerCig,
+                    goalAmount
+                };
+            }
+
+            function saveConfigToStorage(config) {
+                try {
+                    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(config));
+                } catch (e) {
+                    console.warn("Konnte Konfiguration nicht speichern:", e);
+                }
+            }
+
+            function loadConfigFromStorage() {
+                try {
+                    const raw = window.localStorage.getItem(STORAGE_KEY);
+                    if (!raw) return null;
+                    const parsed = JSON.parse(raw);
+                    if (!parsed || typeof parsed !== "object") return null;
+                    if (!parsed.startDateISO) return null;
+                    parsed.startDateMs = new Date(parsed.startDateISO + "T00:00:00").getTime();
+                    if (!Number.isFinite(parsed.startDateMs)) return null;
+                    return parsed;
+                } catch (e) {
+                    console.warn("Konnte Konfiguration nicht laden:", e);
+                    return null;
+                }
+            }
+
+            function applyConfigToInputs(config) {
+                startDateInput.value = config.startDateISO || "";
+                if (typeof config.cigsPerDay === "number") {
+                    cigsPerDayInput.value = config.cigsPerDay > 0 ? String(config.cigsPerDay) : "";
+                }
+                if (typeof config.pricePerCig === "number") {
+                    pricePerCigInput.value =
+                        config.pricePerCig > 0
+                            ? formatGermanNumber(config.pricePerCig, 2)
+                            : "";
+                }
+                if (typeof config.goalAmount === "number" && config.goalAmount > 0) {
+                    goalAmountInput.value = formatGermanNumber(config.goalAmount, 2);
+                } else {
+                    goalAmountInput.value = "";
+                }
+            }
+
+            function computeTotals(config) {
+                const { startDateMs, cigsPerDay, pricePerCig } = config;
+                const now = new Date();
+                const nowMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                const msPerDay = 24 * 60 * 60 * 1000;
+
+                const diffMs = nowMidnight.getTime() - startDateMs;
+                const daysSmokeFree = Math.max(0, Math.floor(diffMs / msPerDay));
+
+                const cigsNotSmoked = Math.max(0, Math.round(daysSmokeFree * cigsPerDay));
+                const dailySavings = cigsPerDay * pricePerCig;
+                const totalSavings = daysSmokeFree * dailySavings;
+
+                const savingsPerMonth = dailySavings * 30;
+                const savingsPerYear = dailySavings * 365;
+
+                return {
+                    daysSmokeFree,
+                    cigsNotSmoked,
+                    totalSavings,
+                    savingsPerMonth,
+                    savingsPerYear,
+                    dailySavings
+                };
+            }
+
+            function animateValue(element, from, to, duration, formatFn) {
+                const start = performance.now();
+                const change = to - from;
+                const safeDuration = duration > 0 ? duration : 0;
+
+                function step(timestamp) {
+                    const elapsed = timestamp - start;
+                    const progress = safeDuration === 0 ? 1 : Math.min(1, elapsed / safeDuration);
+                    const eased = progress < 1
+                        ? 1 - Math.pow(1 - progress, 3)
+                        : 1;
+                    const current = from + change * eased;
+                    element.textContent = formatFn(current);
+                    if (progress < 1) {
+                        window.requestAnimationFrame(step);
                     }
                 }
-            } catch (e) {
-                console.log("Ladefehler", e);
-            }
-        }
 
-        function toggleView(showDashboard) {
-            if (showDashboard) {
-                els.dashboard.classList.remove('hidden');
-                els.inputArea.classList.add('hidden');
-
-                els.settingsTitle.innerText = "Deine Einstellungen";
-                els.settingsTitle.style.fontSize = "1rem";
-                els.settingsTitle.style.marginBottom = "0";
-                els.settingsCard.style.padding = "1rem";
-                els.settingsCard.style.cursor = "pointer";
-
-                els.settingsCard.onclick = (e) => {
-                    // Nur Umschalten wenn InputArea versteckt ist
-                    if (els.inputArea.classList.contains('hidden')) toggleView(false);
-                };
-
-            } else {
-                els.dashboard.classList.add('hidden');
-                els.inputArea.classList.remove('hidden');
-
-                els.settingsTitle.innerText = "Deine Daten";
-                els.settingsTitle.style.fontSize = "1.2rem";
-                els.settingsTitle.style.marginBottom = "1rem";
-                els.settingsCard.style.padding = "1.5rem";
-                els.settingsCard.style.cursor = "default";
-                els.settingsCard.onclick = null;
-            }
-        }
-
-        /* --- RENDER & TICKER --- */
-
-        function renderDashboard() {
-            if (tickerInterval) clearInterval(tickerInterval);
-
-            // Statische Berechnung
-            const dailySave = appData.cigsPerDay * appData.pricePerCig;
-            els.displayMonthSave.innerText = formatCurrency(dailySave * 30);
-            els.displayYearSave.innerText = formatCurrency(dailySave * 365);
-
-            updateTicker();
-            tickerInterval = setInterval(updateTicker, 1000);
-            updateGoalUI();
-        }
-
-        function updateTicker() {
-            // Absturzschutz falls Datum ungültig
-            if (!appData.startDate || isNaN(appData.startDate.getTime())) return;
-
-            const now = new Date();
-            const start = new Date(appData.startDate);
-            start.setHours(0, 0, 0, 0);
-
-            const diffMs = now - start;
-            const diffDaysExact = diffMs / (1000 * 60 * 60 * 24);
-
-            if (diffDaysExact < 0) {
-                els.displayMoney.innerText = "0,00 €";
-                return;
+                window.requestAnimationFrame(step);
             }
 
-            const moneySaved = diffDaysExact * appData.cigsPerDay * appData.pricePerCig;
-            const cigsNotSmoked = Math.floor(diffDaysExact * appData.cigsPerDay);
-            const daysInt = Math.floor(diffDaysExact);
-
-            els.displayMoney.innerText = formatCurrency(moneySaved);
-            els.displayDays.innerText = daysInt;
-            els.displayNotSmoked.innerText = cigsNotSmoked.toLocaleString('de-DE');
-
-            updateGoalUI(moneySaved);
-        }
-
-        function updateGoalUI(currentMoney = null) {
-            if (!appData.goalCost || appData.goalCost <= 0) {
-                els.goalDisplay.classList.add('hidden');
-                return;
-            }
-            els.goalDisplay.classList.remove('hidden');
-
-            let money = currentMoney;
-            if (money === null && appData.startDate) {
-                const now = new Date();
-                const start = new Date(appData.startDate); start.setHours(0, 0, 0, 0);
-                const diff = (now - start) / (1000 * 60 * 60 * 24);
-                money = diff * appData.cigsPerDay * appData.pricePerCig;
-            }
-            if (!money || money < 0) money = 0;
-
-            const percent = Math.min(100, (money / appData.goalCost) * 100);
-            const remaining = Math.max(0, appData.goalCost - money);
-
-            els.progressBar.style.width = percent + "%";
-            els.goalPercent.innerText = percent.toFixed(1) + "%";
-            els.goalRemaining.innerText = "Noch " + formatCurrency(remaining);
-
-            if (remaining > 0) {
-                const dailySave = appData.cigsPerDay * appData.pricePerCig;
-                if (dailySave > 0.01) {
-                    const daysLeft = remaining / dailySave;
-                    const reachDate = new Date();
-                    reachDate.setDate(reachDate.getDate() + daysLeft);
-                    els.goalDate.innerText = "Erreichbar am: " + reachDate.toLocaleDateString('de-DE');
-                    els.goalDate.style.color = "var(--accent-color)";
+            function updateHeroMessage(totals) {
+                const { daysSmokeFree, totalSavings } = totals;
+                if (daysSmokeFree === 0 && totalSavings <= 0) {
+                    heroMessage.textContent =
+                        "Sobald du dein Rauchstopp-Datum eingibst, beginnt deine persönliche Ersparnisreise.";
+                    heroChipDays.textContent = "0 Tage rauchfrei";
+                    heroChipTip.textContent = "Schon kleine Schritte summieren sich zu großen Beträgen.";
+                    return;
                 }
-            } else {
-                els.goalDate.innerText = "Ziel erreicht! 🎉";
-                els.goalDate.style.color = "var(--primary-color)";
+
+                heroChipDays.textContent =
+                    daysSmokeFree === 1
+                        ? "1 Tag rauchfrei"
+                        : numberFormatter.format(daysSmokeFree) + " Tage rauchfrei";
+
+                if (daysSmokeFree < 7) {
+                    heroMessage.textContent =
+                        "Starker Start: Die ersten Tage sind die schwersten – und du bist schon mittendrin.";
+                    heroChipTip.textContent =
+                        "Nutze die gesparte Summe als sichtbare Erinnerung daran, warum du aufgehört hast.";
+                } else if (daysSmokeFree < 30) {
+                    heroMessage.textContent =
+                        "Dein neues Normal setzt sich durch – du sammelst jeden Tag gesundheitliche und finanzielle Gewinne.";
+                    heroChipTip.textContent =
+                        "Plane dir etwas Schönes ein, das du dir von einem Teil der Ersparnis gönnst.";
+                } else if (daysSmokeFree < 180) {
+                    heroMessage.textContent =
+                        "Dein Rauchstopp zahlt sich spürbar aus – viele geben hier auf, du bist schon deutlich weiter.";
+                    heroChipTip.textContent =
+                        "Du hast dir eine Belohnung verdient, die zu deinem rauchfreien Leben passt.";
+                } else {
+                    heroMessage.textContent =
+                        "Aus einer Entscheidung ist eine stabile Gewohnheit geworden – deine Ersparnis wächst wie ein zweites Einkommen.";
+                    heroChipTip.textContent =
+                        "Überlege, welche langfristigen Ziele du mit deiner Ersparnis erreichen möchtest.";
+                }
             }
-        }
 
-        function formatCurrency(val) {
-            return new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(val);
-        }
+            function updateGoalSection(config, totals) {
+                const { goalAmount, startDateMs } = config;
+                const { totalSavings, dailySavings } = totals;
 
+                if (!goalAmount || goalAmount <= 0) {
+                    goalSummary.textContent = "Lege ein Ziel fest, um deine Ersparnis sichtbar zu machen.";
+                    goalProgressLabel.textContent = "Zielerreichung: 0 %";
+                    goalProgressFill.style.width = "0%";
+                    goalForecast.textContent =
+                        "Sobald du ein Sparziel und deine Basisdaten eingibst, siehst du hier, wann du voraussichtlich am Ziel bist.";
+                    return;
+                }
+
+                const percentageRaw = goalAmount > 0 ? (totalSavings / goalAmount) * 100 : 0;
+                const percentage = Math.max(0, Math.min(999, percentageRaw));
+                const roundedPercent = Math.min(100, Math.round(percentage));
+
+                goalSummary.textContent =
+                    "Aktuelles Sparziel: " + compactCurrencyFormatter.format(goalAmount);
+                goalProgressLabel.textContent = "Zielerreichung: " + roundedPercent + " %";
+                goalProgressFill.style.width = Math.min(100, percentage) + "%";
+
+                if (!dailySavings || dailySavings <= 0) {
+                    goalForecast.textContent =
+                        "Sobald du einen Preis pro Zigarette und deine Menge pro Tag eingibst, können wir dein Zieldatum berechnen.";
+                    return;
+                }
+
+                const remaining = Math.max(0, goalAmount - totalSavings);
+                if (remaining <= 0) {
+                    goalForecast.textContent =
+                        "Glückwunsch – mit deiner bisherigen Ersparnis hast du dieses Ziel bereits erreicht.";
+                    return;
+                }
+
+                const daysToGoal = remaining / dailySavings;
+                if (!isFinite(daysToGoal) || daysToGoal <= 0) {
+                    goalForecast.textContent =
+                        "Sobald du einen realistischen Preis pro Zigarette eingibst, können wir dein Zieldatum berechnen.";
+                    return;
+                }
+
+                const msPerDay = 24 * 60 * 60 * 1000;
+                const goalDate = new Date(startDateMs + daysToGoal * msPerDay);
+                const goalDateStr = goalDate.toLocaleDateString("de-DE", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric"
+                });
+
+                const approxMonths = daysToGoal / 30;
+                const monthsRounded = Math.max(1, Math.round(approxMonths));
+
+                goalForecast.textContent =
+                    "Wenn du rauchfrei bleibst, erreichst du dein Ziel voraussichtlich in etwa " +
+                    monthsRounded +
+                    " Monat" +
+                    (monthsRounded === 1 ? "" : "en") +
+                    " – etwa bis zum " +
+                    goalDateStr +
+                    ".";
+            }
+
+            function updateUI(config) {
+                const totals = computeTotals(config);
+
+                const duration = 900;
+
+                animateValue(
+                    savingsTotalDisplay,
+                    lastTotals.totalSavings,
+                    totals.totalSavings,
+                    duration,
+                    function (v) {
+                        const safe = v < 0 ? 0 : v;
+                        return formatGermanNumber(safe, 2);
+                    }
+                );
+
+                animateValue(
+                    daysSmokeFreeDisplay,
+                    lastTotals.daysSmokeFree,
+                    totals.daysSmokeFree,
+                    duration * 0.8,
+                    function (v) {
+                        const safe = v < 0 ? 0 : v;
+                        return numberFormatter.format(Math.round(safe));
+                    }
+                );
+
+                animateValue(
+                    cigsNotSmokedDisplay,
+                    lastTotals.cigsNotSmoked,
+                    totals.cigsNotSmoked,
+                    duration * 0.8,
+                    function (v) {
+                        const safe = v < 0 ? 0 : v;
+                        return numberFormatter.format(Math.round(safe));
+                    }
+                );
+
+                animateValue(
+                    savingsPerMonthDisplay,
+                    lastTotals.savingsPerMonth,
+                    totals.savingsPerMonth,
+                    duration * 0.75,
+                    function (v) {
+                        const safe = v < 0 ? 0 : v;
+                        return currencyFormatter.format(safe);
+                    }
+                );
+
+                animateValue(
+                    savingsPerYearDisplay,
+                    lastTotals.savingsPerYear,
+                    totals.savingsPerYear,
+                    duration * 0.75,
+                    function (v) {
+                        const safe = v < 0 ? 0 : v;
+                        return currencyFormatter.format(safe);
+                    }
+                );
+
+                updateHeroMessage(totals);
+
+                heroChipDays.textContent =
+                    totals.daysSmokeFree === 1
+                        ? "1 Tag rauchfrei"
+                        : numberFormatter.format(totals.daysSmokeFree) + " Tage rauchfrei";
+
+                updateGoalSection(config, totals);
+
+                lastTotals = { ...totals };
+            }
+
+            function onSubmit(event) {
+                event.preventDefault();
+                showError("");
+                try {
+                    const config = getConfigFromInputs();
+                    saveConfigToStorage(config);
+                    updateUI(config);
+                } catch (e) {
+                    showError(e.message || "Es ist ein unbekannter Fehler aufgetreten.");
+                }
+            }
+
+            function onReset() {
+                const confirmReset = window.confirm(
+                    "Möchtest du wirklich alle Daten zurücksetzen? Deine bisherige Ersparnis wird nicht gelöscht – aber die Berechnung beginnt erst wieder, wenn du neue Daten eingibst."
+                );
+                if (!confirmReset) return;
+                try {
+                    window.localStorage.removeItem(STORAGE_KEY);
+                } catch (e) {
+                    console.warn("Konnte Konfiguration nicht löschen:", e);
+                }
+                startDateInput.value = "";
+                cigsPerDayInput.value = "";
+                pricePerCigInput.value = "";
+                goalAmountInput.value = "";
+
+                const emptyConfig = {
+                    startDateISO: null,
+                    startDateMs: Date.now(),
+                    cigsPerDay: 0,
+                    pricePerCig: 0,
+                    goalAmount: null
+                };
+                lastTotals = {
+                    totalSavings: 0,
+                    daysSmokeFree: 0,
+                    cigsNotSmoked: 0,
+                    savingsPerMonth: 0,
+                    savingsPerYear: 0
+                };
+                updateUI(emptyConfig);
+                showError("");
+            }
+
+            function applyTheme(theme) {
+                const body = document.body;
+                if (theme === "dark") {
+                    body.classList.add("dark");
+                    modeToggle.classList.add("dark");
+                } else {
+                    body.classList.remove("dark");
+                    modeToggle.classList.remove("dark");
+                }
+            }
+
+            function loadTheme() {
+                let theme = null;
+                try {
+                    theme = window.localStorage.getItem(THEME_KEY);
+                } catch (e) {
+                    theme = null;
+                }
+                if (!theme) {
+                    if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+                        theme = "dark";
+                    } else {
+                        theme = "light";
+                    }
+                }
+                applyTheme(theme);
+                return theme;
+            }
+
+            function saveTheme(theme) {
+                try {
+                    window.localStorage.setItem(THEME_KEY, theme);
+                } catch (e) {
+                    console.warn("Konnte Theme nicht speichern:", e);
+                }
+            }
+
+            function toggleTheme() {
+                const isDark = document.body.classList.contains("dark");
+                const newTheme = isDark ? "light" : "dark";
+                applyTheme(newTheme);
+                saveTheme(newTheme);
+            }
+
+            function init() {
+                loadTheme();
+
+                const storedConfig = loadConfigFromStorage();
+                if (storedConfig) {
+                    applyConfigToInputs(storedConfig);
+                    try {
+                        updateUI(storedConfig);
+                    } catch (e) {
+                        console.warn("Konnte UI mit gespeicherter Konfiguration nicht initialisieren:", e);
+                    }
+                } else {
+                    const today = new Date();
+                    const todayISO = today.toISOString().slice(0, 10);
+                    startDateInput.value = todayISO;
+                    const defaultConfig = {
+                        startDateISO: todayISO,
+                        startDateMs: new Date(todayISO + "T00:00:00").getTime(),
+                        cigsPerDay: 0,
+                        pricePerCig: 0,
+                        goalAmount: null
+                    };
+                    updateUI(defaultConfig);
+                }
+
+                configForm.addEventListener("submit", onSubmit);
+                resetButton.addEventListener("click", onReset);
+                modeToggle.addEventListener("click", toggleTheme);
+
+                saveButton.addEventListener("focus", function () {
+                    saveButton.scrollIntoView({ block: "nearest", behavior: "smooth" });
+                });
+            }
+
+            if (document.readyState === "loading") {
+                document.addEventListener("DOMContentLoaded", init);
+            } else {
+                init();
+            }
+        })();
     </script>
 </body>
 
